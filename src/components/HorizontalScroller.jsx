@@ -1,68 +1,80 @@
-import { useRef, useEffect } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
-// Horizontal scroll section that pins and translates cards sideways
-export default function HorizontalScroller() {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
-  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-70%'])
+const cards = [
+  {
+    id: 'experience',
+    title: 'Experience',
+    desc: 'Roles, impact, outcomes',
+    gradient: 'from-fuchsia-500 to-rose-500',
+  },
+  {
+    id: 'projects',
+    title: 'Projects',
+    desc: 'Selected case studies',
+    gradient: 'from-emerald-500 to-cyan-500',
+  },
+  {
+    id: 'offer',
+    title: 'What I Offer',
+    desc: 'Strategy • Design • Build',
+    gradient: 'from-indigo-500 to-sky-500',
+  },
+  {
+    id: 'stack',
+    title: 'Tech Stack',
+    desc: 'React • FastAPI • MongoDB',
+    gradient: 'from-amber-500 to-orange-500',
+  },
+  {
+    id: 'contact',
+    title: 'Contact',
+    desc: 'Let’s build something',
+    gradient: 'from-pink-500 to-fuchsia-500',
+  },
+];
 
-  const items = [
-    {
-      title: 'Experience',
-      id: 'work',
-      desc: '5+ years crafting interfaces, design systems, and micro-interactions.',
-      color: 'from-cyan-400 to-sky-500'
-    },
-    {
-      title: 'Projects',
-      id: 'projects',
-      desc: 'Interactive web apps, data visualizations, and 3D experiences.',
-      color: 'from-fuchsia-400 to-pink-500'
-    },
-    {
-      title: 'What I Offer',
-      id: 'offer',
-      desc: 'Product design, frontend engineering, and motion design with a user-first mindset.',
-      color: 'from-emerald-400 to-teal-500'
-    },
-    {
-      title: 'Tech Stack',
-      id: 'stack',
-      desc: 'React, TypeScript, Next.js, Tailwind, Framer Motion, Three.js, FastAPI, MongoDB.',
-      color: 'from-amber-400 to-orange-500'
-    }
-  ]
+const Card = ({ index, title, desc, id, gradient }) => (
+  <a href={`#${id}`} className="group block w-[80vw] max-w-sm shrink-0">
+    <div className="relative h-72 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-[1px] backdrop-blur-md transition-transform duration-300 will-change-transform group-hover:-translate-y-1">
+      <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${gradient} opacity-20 blur-2xl`} />
+      <div className="relative z-10 flex h-full flex-col justify-between rounded-3xl bg-gradient-to-b from-white/5 to-white/0 p-6">
+        <div>
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-white/70 backdrop-blur-md">
+            <span className="h-1.5 w-1.5 rounded-full bg-white/60" />
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <h3 className="mt-4 text-2xl font-semibold text-white">{title}</h3>
+          <p className="mt-2 text-white/70">{desc}</p>
+        </div>
+        <div className="mt-4 flex items-center justify-between text-sm text-white/60">
+          <span>Jump to section</span>
+          <span className="transition-transform group-hover:translate-x-1">→</span>
+        </div>
+      </div>
+      <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-white/10" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/40 to-transparent" />
+    </div>
+  </a>
+);
 
-  useEffect(() => {
-    // ensure the container has enough height to allow scrolling
-    if (ref.current) {
-      const width = items.length * 1000 // approximate scroll distance
-      ref.current.style.height = Math.max(1200, width / 2) + 'px'
-    }
-  }, [])
+const HorizontalScroller = () => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', `-${cards.length * 80 - 100}vw`]);
+  const scale = useTransform(scrollYProgress, [0, 0.8, 1], [1, 0.98, 0.95]);
 
   return (
-    <section ref={ref} className="relative w-full bg-gradient-to-b from-transparent to-black/10">
-      <div className="sticky top-0 h-screen overflow-hidden flex items-center">
-        <motion.div style={{ x }} className="flex gap-8 px-10">
-          {items.map((card, idx) => (
-            <a key={card.id} href={`#${card.id}`} className="group block min-w-[80vw] sm:min-w-[60vw] md:min-w-[46vw] lg:min-w-[40vw]">
-              <div className="relative rounded-3xl p-8 sm:p-10 bg-white/5 border border-white/10 backdrop-blur-xl overflow-hidden">
-                <div className={`absolute inset-0 bg-gradient-to-br ${card.color} opacity-20`} />
-                <div className="relative">
-                  <h3 className="text-3xl sm:text-4xl font-extrabold text-white drop-shadow">{card.title}</h3>
-                  <p className="mt-4 text-white/80 text-lg max-w-xl">{card.desc}</p>
-                  <div className="mt-6 inline-flex items-center gap-2 text-white/90 font-semibold">
-                    <span className="underline decoration-white/40 underline-offset-4">Jump to section</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                  </div>
-                </div>
-              </div>
-            </a>
+    <section ref={ref} className="relative h-[220vh]">
+      <div className="sticky top-0 h-screen overflow-hidden">
+        <motion.div style={{ x, scale }} className="flex h-full items-center gap-6 px-6">
+          {cards.map((c, i) => (
+            <Card key={c.id} index={i} {...c} />
           ))}
         </motion.div>
       </div>
     </section>
-  )
-}
+  );
+};
+
+export default HorizontalScroller;

@@ -1,128 +1,165 @@
-import { motion } from 'framer-motion'
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Code, Briefcase, Sparkles, Layers, Mail } from 'lucide-react';
 
-function SectionWrapper({ id, title, children }) {
-  return (
-    <section id={id} className="relative w-full py-24 sm:py-28">
-      <div className="mx-auto max-w-6xl px-6">
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
-          className="text-3xl sm:text-4xl font-bold text-white"
-        >
-          {title}
-        </motion.h2>
-        <div className="mt-8">
-          {children}
+const SectionWrapper = ({ id, icon: Icon, title, children }) => (
+  <section id={id} className="relative mx-auto max-w-6xl px-6 py-24">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-100px' }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      className="relative"
+    >
+      <div className="mb-10 flex items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/10">
+          <Icon className="h-5 w-5 text-white" />
         </div>
+        <h2 className="text-2xl font-semibold text-white md:text-3xl">{title}</h2>
       </div>
-    </section>
-  )
-}
+      {children}
+    </motion.div>
+  </section>
+);
 
-export function ExperienceSection() {
-  const items = [
-    { role: 'Senior Frontend Engineer', company: 'Acme Co', period: '2022 — Present', points: ['Led UI platform migration', 'Built design system components', 'Improved performance and accessibility'] },
-    { role: 'Product Designer & Dev', company: 'Studio Q', period: '2020 — 2022', points: ['Prototyped 3D interactions', 'Delivered data viz dashboards', 'Cross-functional collaboration'] },
-  ]
-
-  return (
-    <SectionWrapper id="work" title="Work Experience">
-      <div className="grid sm:grid-cols-2 gap-6">
-        {items.map((item, idx) => (
-          <motion.div key={idx} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: idx * 0.1 }} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-            <div className="flex items-baseline justify-between gap-4">
-              <h3 className="text-xl font-semibold text-white">{item.role}</h3>
-              <span className="text-sm text-white/70">{item.period}</span>
+export const ExperienceSection = () => (
+  <SectionWrapper id="experience" icon={Briefcase} title="Experience">
+    <ul className="grid gap-6 md:grid-cols-2">
+      {[
+        {
+          role: 'Senior Frontend Engineer',
+          org: 'Fintech Co.',
+          info: 'Led migration to component-driven UI and introduced motion-first patterns.',
+          year: '2022 — Present',
+        },
+        {
+          role: 'Product Engineer',
+          org: 'SaaS Platform',
+          info: 'Built design systems and high-conversion landing experiences.',
+          year: '2020 — 2022',
+        },
+        {
+          role: 'UI Engineer',
+          org: 'Agency',
+          info: 'Delivered interactive sites for enterprise clients.',
+          year: '2018 — 2020',
+        },
+        {
+          role: 'Freelance Designer/Dev',
+          org: 'Independent',
+          info: 'Brand, web, animation for startups and creators.',
+          year: '2016 — 2018',
+        },
+      ].map((item, i) => (
+        <motion.li
+          key={i}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.05 }}
+          className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-md"
+        >
+          <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-white/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+          <div className="relative">
+            <div className="flex items-center justify-between gap-4">
+              <h3 className="text-lg font-semibold text-white">{item.role}</h3>
+              <span className="text-sm text-white/60">{item.year}</span>
             </div>
-            <p className="text-white/80 mt-1">{item.company}</p>
-            <ul className="mt-4 space-y-2 text-white/80">
-              {item.points.map((p, i) => <li key={i} className="flex gap-2"><span className="text-white/50">•</span><span>{p}</span></li>)}
-            </ul>
-          </motion.div>
-        ))}
-      </div>
-    </SectionWrapper>
-  )
-}
+            <p className="mt-1 text-white/70">{item.org}</p>
+            <p className="mt-3 text-white/60">{item.info}</p>
+          </div>
+        </motion.li>
+      ))}
+    </ul>
+  </SectionWrapper>
+);
 
-export function ProjectsSection() {
-  const projects = [
-    { name: 'Interactive Portfolio', tag: '3D + Motion', desc: 'A playful portfolio with 3D hero and horizontal scroller.' },
-    { name: 'Analytics Dashboard', tag: 'Data Viz', desc: 'Real-time dashboard with charts and micro-interactions.' },
-    { name: 'E-commerce UI Kit', tag: 'Design System', desc: 'Reusable components with accessibility baked in.' },
-  ]
-
-  return (
-    <SectionWrapper id="projects" title="Projects">
-      <div className="grid md:grid-cols-3 gap-6">
-        {projects.map((p, idx) => (
-          <motion.a key={idx} href="#" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: idx * 0.05 }} className="group relative rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition" />
-            <div className="flex items-center justify-between">
-              <h3 className="text-xl font-semibold text-white">{p.name}</h3>
-              <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-white/80 border border-white/10">{p.tag}</span>
+export const ProjectsSection = () => (
+  <SectionWrapper id="projects" icon={Layers} title="Projects">
+    <div className="grid gap-6 md:grid-cols-2">
+      {[1, 2, 3, 4].map((i) => (
+        <motion.a
+          key={i}
+          href="#"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-4"
+        >
+          <div className="relative h-40 w-full overflow-hidden rounded-2xl bg-gradient-to-br from-fuchsia-500/20 via-cyan-500/20 to-indigo-500/20">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_-10%,rgba(255,255,255,0.25),transparent_40%),radial-gradient(circle_at_80%_130%,rgba(255,255,255,0.15),transparent_40%)]" />
+          </div>
+          <div className="mt-4 flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-white">Project {i}</h3>
+              <p className="text-white/60">Interactive web experience</p>
             </div>
-            <p className="mt-3 text-white/80">{p.desc}</p>
-            <div className="mt-6 inline-flex items-center gap-2 text-white/90 font-semibold">
-              <span className="underline decoration-white/40 underline-offset-4">View</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-            </div>
-          </motion.a>
-        ))}
-      </div>
-    </SectionWrapper>
-  )
-}
+            <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-sm text-white/80">Case Study</span>
+          </div>
+        </motion.a>
+      ))}
+    </div>
+  </SectionWrapper>
+);
 
-export function OfferSection() {
-  const offers = [
-    { title: 'Product-focused Frontend', desc: 'I translate ideas into polished, high-performing web apps.' },
-    { title: 'Motion & Micro-interactions', desc: 'Delightful animations that serve usability and brand.' },
-    { title: 'Design Systems', desc: 'Scalable components with accessibility and theming.' },
-  ]
+export const OfferSection = () => (
+  <SectionWrapper id="offer" icon={Sparkles} title="What I Offer">
+    <div className="grid gap-6 md:grid-cols-3">
+      {[
+        { t: 'Product Design', d: 'From concept to high-fidelity prototypes.' },
+        { t: 'Frontend Engineering', d: 'React, animations, performance, accessibility.' },
+        { t: 'Web Animations', d: 'Motion-driven storytelling with Framer Motion & WebGL.' },
+      ].map((x, i) => (
+        <motion.div
+          key={x.t}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.05 }}
+          className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+          <h3 className="text-lg font-semibold text-white">{x.t}</h3>
+          <p className="mt-2 text-white/70">{x.d}</p>
+        </motion.div>
+      ))}
+    </div>
+  </SectionWrapper>
+);
 
-  return (
-    <SectionWrapper id="offer" title="What I Offer">
-      <div className="grid md:grid-cols-3 gap-6">
-        {offers.map((o, idx) => (
-          <motion.div key={idx} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: idx * 0.05 }} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-            <h3 className="text-lg font-semibold text-white">{o.title}</h3>
-            <p className="mt-2 text-white/80">{o.desc}</p>
-          </motion.div>
-        ))}
-      </div>
-    </SectionWrapper>
-  )
-}
+export const StackSection = () => (
+  <SectionWrapper id="stack" icon={Code} title="Tech Stack">
+    <div className="flex flex-wrap gap-3">
+      {['React', 'Vite', 'Tailwind', 'Framer Motion', 'Spline', 'FastAPI', 'MongoDB'].map((tag) => (
+        <motion.span
+          key={tag}
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-white/80 backdrop-blur"
+        >
+          {tag}
+        </motion.span>
+      ))}
+    </div>
+  </SectionWrapper>
+);
 
-export function StackSection() {
-  const stack = ['React', 'TypeScript', 'Next.js', 'Tailwind', 'Framer Motion', 'Three.js', 'FastAPI', 'MongoDB']
-  return (
-    <SectionWrapper id="stack" title="Tech Stack">
-      <div className="flex flex-wrap gap-3">
-        {stack.map((s, i) => (
-          <motion.span key={i} initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.03 }} className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-white/90 backdrop-blur">
-            {s}
-          </motion.span>
-        ))}
+export const ContactSection = () => (
+  <SectionWrapper id="contact" icon={Mail} title="Contact">
+    <motion.form
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="mx-auto grid max-w-2xl gap-4"
+      onSubmit={(e) => e.preventDefault()}
+    >
+      <div className="grid gap-4 md:grid-cols-2">
+        <input className="rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-white placeholder-white/50 outline-none ring-0 focus:border-white/30" placeholder="Name" />
+        <input className="rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-white placeholder-white/50 outline-none ring-0 focus:border-white/30" placeholder="Email" type="email" />
       </div>
-    </SectionWrapper>
-  )
-}
-
-export function ContactSection() {
-  return (
-    <SectionWrapper id="contact" title="Contact Me">
-      <div className="max-w-2xl">
-        <form className="grid gap-4">
-          <input type="text" name="name" placeholder="Your name" className="rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-white/50 outline-none focus:border-white/30" />
-          <input type="email" name="email" placeholder="Your email" className="rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-white/50 outline-none focus:border-white/30" />
-          <textarea name="message" placeholder="Tell me about your project" rows={5} className="rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-white/50 outline-none focus:border-white/30" />
-          <button type="submit" className="inline-flex justify-center rounded-xl bg-white text-gray-900 font-semibold py-3 px-5 hover:bg-white/90 transition">Send</button>
-        </form>
-      </div>
-    </SectionWrapper>
-  )
-}
+      <textarea className="min-h-[140px] rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-white placeholder-white/50 outline-none ring-0 focus:border-white/30" placeholder="Tell me about your project" />
+      <button className="mt-2 inline-flex items-center justify-center rounded-xl bg-white px-5 py-3 font-semibold text-gray-900 transition hover:shadow-xl hover:shadow-fuchsia-500/20">Send message</button>
+    </motion.form>
+  </SectionWrapper>
+);

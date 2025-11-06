@@ -1,26 +1,27 @@
-import Nav from './components/Nav'
-import Hero from './components/Hero'
-import HorizontalScroller from './components/HorizontalScroller'
-import { ExperienceSection, ProjectsSection, OfferSection, StackSection, ContactSection } from './components/Sections'
+import React from 'react';
+import Hero from './components/Hero';
+import HorizontalScroller from './components/HorizontalScroller';
+import Nav from './components/Nav';
+import { ExperienceSection, ProjectsSection, OfferSection, StackSection, ContactSection } from './components/Sections';
 
 function App() {
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-[#0b0f1a] via-[#0e1220] to-[#0b0f1a] text-white">
+    <div className="min-h-screen bg-[#0a0a0b] text-white">
       <Nav />
       <Hero />
       <HorizontalScroller />
-      <main className="relative">
+      <main>
         <ExperienceSection />
         <ProjectsSection />
         <OfferSection />
         <StackSection />
         <ContactSection />
       </main>
-      <footer className="py-10 text-center text-white/60">
-        © {new Date().getFullYear()} — Built with care and a bit of sparkle ✨
+      <footer className="mx-auto max-w-6xl px-6 py-16 text-center text-white/50">
+        © {new Date().getFullYear()} motive — Built with love, motion, and great code.
       </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
