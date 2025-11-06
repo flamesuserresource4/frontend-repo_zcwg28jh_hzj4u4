@@ -1,26 +1,24 @@
-import { useState } from 'react'
+import Nav from './components/Nav'
+import Hero from './components/Hero'
+import HorizontalScroller from './components/HorizontalScroller'
+import { ExperienceSection, ProjectsSection, OfferSection, StackSection, ContactSection } from './components/Sections'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen w-full bg-gradient-to-b from-[#0b0f1a] via-[#0e1220] to-[#0b0f1a] text-white">
+      <Nav />
+      <Hero />
+      <HorizontalScroller />
+      <main className="relative">
+        <ExperienceSection />
+        <ProjectsSection />
+        <OfferSection />
+        <StackSection />
+        <ContactSection />
+      </main>
+      <footer className="py-10 text-center text-white/60">
+        © {new Date().getFullYear()} — Built with care and a bit of sparkle ✨
+      </footer>
     </div>
   )
 }
